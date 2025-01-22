@@ -1,8 +1,14 @@
 import pandas as pd
 from datetime import datetime
+import kagglehub
 
-df = pd.read_csv('Datasets/cab_rides.csv')
-weather = pd.read_csv('Datasets/weather.csv')
+# Download latest version
+path = kagglehub.dataset_download("ravi72munde/uber-lyft-cab-prices")
+
+print("Path to dataset files:", path)
+
+df = pd.read_csv(path + '/cab_rides.csv')
+weather = pd.read_csv(path + '/weather.csv')
 
 # merging 2 datasets base on location and datatime
 weather['time_stamp'] = [datetime.fromtimestamp(i) for
@@ -23,4 +29,4 @@ new_df = pd.merge(df,
 # add 2 new feature base on time_stamp column
 new_df['hour'] = new_df['time_stamp'].dt.hour
 new_df['day'] = new_df['time_stamp'].dt.day_name()
-new_df.head(2)
+print(new_df.head(2))
