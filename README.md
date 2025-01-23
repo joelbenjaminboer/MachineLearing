@@ -1,0 +1,12 @@
+TODO:
+
+- merge wheater and cab prices                          X
+- create a dataset split                                X
+- create different models to train on                   X
+- create different metrics to check the models          X
+- Train different models on train split
+- evaluate models with metrics
+- alter parameters with validate split
+- evalute models again
+- import plots to visualize data
+- check final accuracy of models with the test split

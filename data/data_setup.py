@@ -3,7 +3,7 @@ from datetime import datetime
 import kagglehub
 
 
-def mergedata():
+def merge_data():
     """
     This function downloads the dataset from Kaggle and merges the two datasets
     based on location and datetime columns.
@@ -40,7 +40,34 @@ def mergedata():
     return merged_df
 
 
-def splitdata(data):
+def preprocess_data(data):
+    """
+    This function preprocesses the data by encoding the categorical variables.
+
+    Parameters
+    ----------
+    data : DataFrame
+        The dataset to be preprocessed.
+
+    Returns
+    -------
+    data : DataFrame
+        The preprocessed dataset.
+    """
+    # encode the categorical variables
+    data = data.dropna()
+    data = data.drop(columns=["id", "product_id", "time_stamp"])
+    data = pd.get_dummies(data, columns=["cab_type",
+                                         "day",
+                                         "hour",
+                                         "destination",
+                                         "name",
+                                         "location"])
+
+    return data
+
+
+def split_data(data):
     """
     This function splits the data into training and testing datasets.
 
@@ -61,6 +88,6 @@ def splitdata(data):
     # split data into training and testing datasets
     train_data = data.sample(frac=0.7, random_state=0)
     valid_data = data.drop(train_data.index).sample(frac=0.5, random_state=0)
-    test_data = data.drop(train_data.index.drop(valid_data.index))
+    test_data = data.drop(train_data.index).drop(valid_data.index)
 
     return train_data, test_data, valid_data

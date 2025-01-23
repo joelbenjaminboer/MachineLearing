@@ -24,4 +24,4 @@ class RootMeanSquaredError:
         y_pred : array-like
             The predicted target values.
         """
-        return self.metric(y_true, y_pred, squared=False)
+        return self.metric(y_true, y_pred)
