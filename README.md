@@ -6,7 +6,7 @@ TODO:
 - create different metrics to check the models          X
 - Train different models on train split                 X
 - evaluate models with metrics                          X
-- alter parameters with validate split
-- evalute models again
+- alter parameters with validate split                  X
+- evalute models again                                  X
 - import plots to visualize data
 - check final accuracy of models with the test split
