@@ -8,5 +8,5 @@ TODO:
 - evaluate models with metrics                          X
 - alter parameters with validate split                  X
 - evalute models again                                  X
-- import plots to visualize data
-- check final accuracy of models with the test split
+- import plots to visualize data                        X
+- check final accuracy of models with the test split    X
