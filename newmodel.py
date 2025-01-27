@@ -45,4 +45,4 @@ history = model.fit(X_train, y_train, validation_split=0.2, epochs=50, batch_siz
 # Evaluate the model
 test_loss, test_mae = model.evaluate(X_test, y_test)
 print(f"Test MAE: {test_mae}")
-print(f"r2_score: {r2_score(y_test, model.predict(X_test))}")4
+print(f"r2_score: {r2_score(y_test, model.predict(X_test))}")
