@@ -1,7 +1,7 @@
 from models.Baysian_regression import BayesianRidgeModel
 from models.Linear_regression import LinearRegressionModel
 from models.Decision_tree_regression import DecisionTreeRegressionModel
-from models.DNN import build_DNN
+from models.FNN import build_FNN
 from data.data_setup import merge_data
 from data.data_setup import split_data
 from data.data_setup import preprocess_data
@@ -10,6 +10,7 @@ from metrics.Root_mean_squared_error import RootMeanSquaredError
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
+from keras.callbacks import EarlyStopping
 import matplotlib.pyplot as plt
 from pandas import DataFrame
 
@@ -32,18 +33,25 @@ def train(X_train: DataFrame,
     decision_tree_regression_model = DecisionTreeRegressionModel()
     decision_tree_regression_model.train(X_train, y_train)
 
-    Deep_Neural_Network = build_DNN(input_shape=(X_train.shape[1],))
-    Deep_Neural_Network.fit(X_train,
-                            y_train,
-                            validation_split=0.2,
-                            epochs=50,
-                            batch_size=32)
+    Feedforward_Neural_Network = build_FNN(input_shape=(X_train.shape[1],))
+    early_stopping = EarlyStopping(monitor='val_loss',
+                                   min_delta=0.001,
+                                   patience=10,
+                                   restore_best_weights=True
+                                   )
+    Feedforward_Neural_Network.fit(X_train,
+                                   y_train,
+                                   validation_split=0.2,
+                                   epochs=50,
+                                   batch_size=32,
+                                   callbacks=[early_stopping],
+                                   verbose=1)
 
     # predict the target values
     pred_linear = linear_regression_model.predict(X_valid)
     pred_bayesian = bayesian_ridge_model.predict(X_valid)
     pred_decision = decision_tree_regression_model.predict(X_valid)
-    pred_DNN = Deep_Neural_Network.predict(X_valid)
+    pred_FNN = Feedforward_Neural_Network.predict(X_valid)
 
     # print the metrics
     print("Before Hyperparameter Tuning:")
@@ -51,7 +59,7 @@ def train(X_train: DataFrame,
                       [pred_linear,
                        pred_bayesian,
                        pred_decision,
-                       pred_DNN])
+                       pred_FNN])
 
     # alter parameters with validate split
 
@@ -113,7 +121,7 @@ def train(X_train: DataFrame,
     pred_linear_tuned = linear_regression_model.predict(X_valid)
     pred_bayesian_tuned = bayesian_ridge_model.predict(X_valid)
     pred_decision_tuned = decision_tree_regression_model.predict(X_valid)
-    pred_DNN = Deep_Neural_Network.predict(X_valid)
+    pred_FNN = Feedforward_Neural_Network.predict(X_valid)
 
     # print the metrics
     print("After Hyperparameter Tuning:")
@@ -121,7 +129,7 @@ def train(X_train: DataFrame,
                       [pred_linear_tuned,
                        pred_bayesian_tuned,
                        pred_decision_tuned,
-                       pred_DNN])
+                       pred_FNN])
 
     # plot the results
 
@@ -153,8 +161,8 @@ def train(X_train: DataFrame,
     axes[1, 1].set_ylabel("Predictions")
     axes[1, 1].legend()
 
-    axes[2, 0].scatter(y_valid, pred_DNN, color='purple')
-    axes[2, 0].set_title("Deep Neural Network")
+    axes[2, 0].scatter(y_valid, pred_FNN, color='purple')
+    axes[2, 0].set_title("Feedforward Neural Network")
     axes[2, 0].set_xlabel("True Values")
     axes[2, 0].set_ylabel("Predictions")
 
@@ -163,7 +171,7 @@ def train(X_train: DataFrame,
     return (linear_regression_model,
             bayesian_ridge_model,
             decision_tree_regression_model,
-            Deep_Neural_Network)
+            Feedforward_Neural_Network)
 
 
 def evaluate(best_models: tuple,
@@ -192,20 +200,20 @@ def evaluate(best_models: tuple,
 
     decision_tree_regression_model = best_models[2]
 
-    Deep_Neural_Network = best_models[3]
+    Feedforward_Neural_Network = best_models[3]
 
     # predict the target values
     pred_linear = linear_regression_model.predict(X_test)
     pred_bayesian = bayesian_ridge_model.predict(X_test)
     pred_decision = decision_tree_regression_model.predict(X_test)
-    pred_DNN = Deep_Neural_Network.predict(X_test)
+    pred_FNN = Feedforward_Neural_Network.predict(X_test)
 
     # calculate the metrics
     print_all_metrics(y_test,
                       [pred_linear,
                        pred_bayesian,
                        pred_decision,
-                       pred_DNN])
+                       pred_FNN])
 
 
 def print_all_metrics(y_df, y_pred) -> None:
@@ -229,7 +237,7 @@ def print_all_metrics(y_df, y_pred) -> None:
     print(f"{mse_bayesian}")
     print("Mean Squared Error for Decision Tree Regression: ")
     print(f"{mse_decision}")
-    print("Mean Squared Error for Deep Neural Network: ")
+    print("Mean Squared Error for Feedforward Neural Network: ")
     print(f"{mse.calculate(y_df, y_pred[3])}")
     print("")
     print("Root Mean Squared Error for Linear Regression: ")
@@ -238,7 +246,7 @@ def print_all_metrics(y_df, y_pred) -> None:
     print(f"{rmse_bayesian}")
     print("Root Mean Squared Error for Decision Tree Regression: ")
     print(f"{rmse_decision}")
-    print("Root Mean Squared Error for Deep Neural Network: ")
+    print("Root Mean Squared Error for Feedforward Neural Network: ")
     print(f"{rmse.calculate(y_df, y_pred[3])}")
     print("")
     print("R2 Score for Linear Regression: ")
@@ -247,7 +255,7 @@ def print_all_metrics(y_df, y_pred) -> None:
     print(f"{r2_score(y_df, y_pred[1])}")
     print("R2 Score for Decision Tree Regression: ")
     print(f"{r2_score(y_df, y_pred[2])}")
-    print("R2 Score for Deep Neural Network: ")
+    print("R2 Score for Feedforward Neural Network: ")
     print(f"{r2_score(y_df, y_pred[3])}")
 
 

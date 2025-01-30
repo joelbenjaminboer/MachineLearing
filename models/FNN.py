@@ -2,7 +2,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout
 
 
-def build_DNN(input_shape):
+def build_FNN(input_shape):
     """
     Defines and returns a deep learning model.
 
@@ -10,7 +10,7 @@ def build_DNN(input_shape):
         input_shape (tuple): Shape of the input data (number of features).
 
     Returns:
-        tf.keras.Model: Compiled deep learning model.
+        keras.Model: Compiled deep learning model.
     """
     model = Sequential([
         Dense(64, activation='relu', input_shape=input_shape),
