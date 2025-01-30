@@ -36,13 +36,13 @@ def train(X_train: DataFrame,
     Feedforward_Neural_Network = build_FNN(input_shape=(X_train.shape[1],))
     early_stopping = EarlyStopping(monitor='val_loss',
                                    min_delta=0.001,
-                                   patience=10,
+                                   patience=20,
                                    restore_best_weights=True
                                    )
     Feedforward_Neural_Network.fit(X_train,
                                    y_train,
                                    validation_split=0.2,
-                                   epochs=50,
+                                   epochs=80,
                                    batch_size=32,
                                    callbacks=[early_stopping],
                                    verbose=1)
@@ -56,6 +56,7 @@ def train(X_train: DataFrame,
     # print the metrics
     print("Before Hyperparameter Tuning:")
     print_all_metrics(y_valid,
+                      X_valid,
                       [pred_linear,
                        pred_bayesian,
                        pred_decision,
@@ -126,6 +127,7 @@ def train(X_train: DataFrame,
     # print the metrics
     print("After Hyperparameter Tuning:")
     print_all_metrics(y_valid,
+                      X_valid,
                       [pred_linear_tuned,
                        pred_bayesian_tuned,
                        pred_decision_tuned,
@@ -210,16 +212,25 @@ def evaluate(best_models: tuple,
 
     # calculate the metrics
     print_all_metrics(y_test,
+                      X_test,
                       [pred_linear,
                        pred_bayesian,
                        pred_decision,
                        pred_FNN])
 
 
-def print_all_metrics(y_df, y_pred) -> None:
+def print_all_metrics(y_df, x_df, y_pred) -> None:
     """
     This function prints all the metrics for the models.
     """
+
+    def adjusted_r2(y_true, y_pred, n, p):
+        """
+        This function calculates the adjusted R2 score.
+        """
+        r2 = r2_score(y_true, y_pred)
+        return 1 - ((1 - r2) * (n - 1) / (n - p - 1))
+
     mse = MeanSquaredError()
     rmse = RootMeanSquaredError()
 
@@ -257,6 +268,15 @@ def print_all_metrics(y_df, y_pred) -> None:
     print(f"{r2_score(y_df, y_pred[2])}")
     print("R2 Score for Feedforward Neural Network: ")
     print(f"{r2_score(y_df, y_pred[3])}")
+    print("")
+    print("adjusted R2 Score for Linear Regression: ")
+    print(f"{adjusted_r2(y_df, y_pred[0], len(y_df), x_df.shape[1])}")
+    print("adjusted R2 Score for Bayesian Ridge: ")
+    print(f"{adjusted_r2(y_df, y_pred[1], len(y_df), x_df.shape[1])}")
+    print("adjusted R2 Score for Decision Tree Regression: ")
+    print(f"{adjusted_r2(y_df, y_pred[2], len(y_df), x_df.shape[1])}")
+    print("adjusted R2 Score for Feedforward Neural Network: ")
+    print(f"{adjusted_r2(y_df, y_pred[3], len(y_df), x_df.shape[1])}")
 
 
 if __name__ == "__main__":

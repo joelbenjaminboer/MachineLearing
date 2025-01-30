@@ -1,5 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
+from keras.regularizers import l2
 
 
 def build_FNN(input_shape):
@@ -13,10 +14,11 @@ def build_FNN(input_shape):
         keras.Model: Compiled deep learning model.
     """
     model = Sequential([
-        Dense(64, activation='relu', input_shape=input_shape),
-        Dropout(0.2),  # Prevent overfitting
-        Dense(32, activation='relu'),
-        Dense(1)  # Output layer for regression
+        Dense(64, activation='relu', kernel_regularizer=l2(0.01),
+              input_shape=input_shape),
+        Dropout(0.2),
+        Dense(32, activation='relu', kernel_regularizer=l2(0.01)),
+        Dense(1,  kernel_regularizer=l2(0.01))
     ])
 
     # Compile the model
