@@ -277,6 +277,7 @@ def print_all_metrics(y_df, x_df, y_pred) -> None:
     print(f"{adjusted_r2(y_df, y_pred[2], len(y_df), x_df.shape[1])}")
     print("adjusted R2 Score for Feedforward Neural Network: ")
     print(f"{adjusted_r2(y_df, y_pred[3], len(y_df), x_df.shape[1])}")
+    print("")
 
 
 if __name__ == "__main__":
