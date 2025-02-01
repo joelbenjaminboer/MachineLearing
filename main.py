@@ -219,12 +219,14 @@ def evaluate(best_models: tuple,
                        pred_FNN])
 
 
-def print_all_metrics(y_df, x_df, y_pred) -> None:
+def print_all_metrics(y_df: DataFrame,
+                      x_df: DataFrame,
+                      y_pred: list) -> None:
     """
     This function prints all the metrics for the models.
     """
 
-    def adjusted_r2(y_true, y_pred, n, p):
+    def adjusted_r2(y_true: list, y_pred: list, n: int, p: int) -> float:
         """
         This function calculates the adjusted R2 score.
         """
