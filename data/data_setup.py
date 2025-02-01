@@ -3,7 +3,7 @@ from datetime import datetime
 import kagglehub
 
 
-def merge_data():
+def merge_data() -> pd.DataFrame:
     """
     This function downloads the dataset from Kaggle and merges the two datasets
     based on location and datetime columns.
@@ -40,7 +40,7 @@ def merge_data():
     return merged_df
 
 
-def preprocess_data(data):
+def preprocess_data(data: pd.DataFrame) -> pd.DataFrame:
     """
     This function preprocesses the data by encoding the categorical variables.
 
@@ -67,7 +67,7 @@ def preprocess_data(data):
     return data
 
 
-def split_data(data):
+def split_data(data: pd.DataFrame) -> tuple:
     """
     This function splits the data into training and testing datasets.
 

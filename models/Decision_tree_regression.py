@@ -7,13 +7,13 @@ class DecisionTreeRegressionModel:
 
     This class is a wrapper for the DecisionTreeRegressor model from sklearn.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         initialize the model with the DecisionTreeRegressor model from sklearn
         """
         self.model = DecisionTreeRegressor()
 
-    def train(self, X_train, y_train):
+    def train(self, X_train: list, y_train: list) -> None:
         """
         train the model with the training data
 
@@ -26,7 +26,7 @@ class DecisionTreeRegressionModel:
         """
         self.model.fit(X_train, y_train)
 
-    def predict(self, X_test):
+    def predict(self, X_test: list) -> list:
         """
         predict the target values for the input samples
 

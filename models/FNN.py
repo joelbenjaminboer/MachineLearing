@@ -3,7 +3,7 @@ from keras.layers import Dense, Dropout
 from keras.regularizers import l2
 
 
-def build_FNN(input_shape):
+def build_FNN(input_shape) -> Sequential:
     """
     Defines and returns a deep learning model.
 
