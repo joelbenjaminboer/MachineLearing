@@ -1,8 +1,8 @@
-TODO:
-
 Ensure python environment is in 3.9
-
 pip install -r requirements.txt
+
+
+TODO:
 
 - merge wheater and cab prices                          X
 - create a dataset split                                X
