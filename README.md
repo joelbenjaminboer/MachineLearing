@@ -1,5 +1,8 @@
 TODO:
 
+Ensure python is in 3.9
+pip install -r requirements.txt
+
 - merge wheater and cab prices                          X
 - create a dataset split                                X
 - create different models to train on                   X
