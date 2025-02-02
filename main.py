@@ -294,6 +294,7 @@ def plot_results(models: list, y: list) -> None:
     axes[2, 0].set_title("Feedforward Neural Network")
     axes[2, 0].set_xlabel("True Values")
     axes[2, 0].set_ylabel("Predictions")
+    plt.subplots_adjust(hspace=0.5, wspace=0.5)
 
     plt.show()
 

@@ -1,6 +1,6 @@
-kagglehub==0.3.7
-keras==2.12.0
-matplotlib==3.10.0
-pandas==2.2.3
-scikit_learn==1.6.1
-tensorflow==2.3.0
+kagglehub
+keras
+matplotlib
+pandas
+scikit_learn
+tensorflow
