@@ -134,41 +134,10 @@ def train(X_train: DataFrame,
                        pred_FNN])
 
     # plot the results
-
-    figure, axes = plt.subplots(3, 2, figsize=(10, 10))
-
-    axes[0, 0].scatter(y_valid, pred_linear_tuned, color='blue')
-    axes[0, 0].set_title("Linear Regression")
-    axes[0, 0].set_xlabel("True Values")
-    axes[0, 0].set_ylabel("Predictions")
-
-    axes[0, 1].scatter(y_valid, pred_bayesian_tuned, color='red')
-    axes[0, 1].set_title("Bayesian Ridge")
-    axes[0, 1].set_xlabel("True Values")
-    axes[0, 1].set_ylabel("Predictions")
-
-    axes[1, 0].scatter(y_valid, pred_decision_tuned, color='green')
-    axes[1, 0].set_title("Decision Tree Regression")
-    axes[1, 0].set_xlabel("True Values")
-    axes[1, 0].set_ylabel("Predictions")
-
-    axes[1, 1].scatter(y_valid, pred_linear_tuned, color='blue',
-                       label='Linear')
-    axes[1, 1].scatter(y_valid, pred_bayesian_tuned, color='red',
-                       label='Bayesian')
-    axes[1, 1].scatter(y_valid, pred_decision_tuned, color='green',
-                       label='Decision Tree')
-    axes[1, 1].set_title("Comparison")
-    axes[1, 1].set_xlabel("True Values")
-    axes[1, 1].set_ylabel("Predictions")
-    axes[1, 1].legend()
-
-    axes[2, 0].scatter(y_valid, pred_FNN, color='purple')
-    axes[2, 0].set_title("Feedforward Neural Network")
-    axes[2, 0].set_xlabel("True Values")
-    axes[2, 0].set_ylabel("Predictions")
-
-    plt.show()
+    plot_results([pred_linear_tuned,
+                  pred_bayesian_tuned,
+                  pred_decision_tuned,
+                  pred_FNN], y_valid)
 
     return (linear_regression_model,
             bayesian_ridge_model,
@@ -217,6 +186,12 @@ def evaluate(best_models: tuple,
                        pred_bayesian,
                        pred_decision,
                        pred_FNN])
+
+    # plot the results
+    plot_results([pred_linear,
+                  pred_bayesian,
+                  pred_decision,
+                  pred_FNN], y_test)
 
 
 def print_all_metrics(y_df: DataFrame,
@@ -280,6 +255,47 @@ def print_all_metrics(y_df: DataFrame,
     print("adjusted R2 Score for Feedforward Neural Network: ")
     print(f"{adjusted_r2(y_df, y_pred[3], len(y_df), x_df.shape[1])}")
     print("")
+
+
+def plot_results(models: list, y: list) -> None:
+    """
+    This function plots the results.
+    """
+    figure, axes = plt.subplots(3, 2, figsize=(10, 10))
+
+    axes[0, 0].scatter(y, models[0], color='blue')
+    axes[0, 0].set_title("Linear Regression")
+    axes[0, 0].set_xlabel("True Values")
+    axes[0, 0].set_ylabel("Predictions")
+
+    axes[0, 1].scatter(y, models[1], color='red')
+    axes[0, 1].set_title("Bayesian Ridge")
+    axes[0, 1].set_xlabel("True Values")
+    axes[0, 1].set_ylabel("Predictions")
+
+    axes[1, 0].scatter(y, models[2], color='green')
+    axes[1, 0].set_title("Decision Tree Regression")
+    axes[1, 0].set_xlabel("True Values")
+    axes[1, 0].set_ylabel("Predictions")
+
+    axes[1, 1].scatter(y, models[0], color='blue',
+                       label='Linear')
+    axes[1, 1].scatter(y, models[1], color='red',
+                       label='Bayesian')
+    axes[1, 1].scatter(y, models[2], color='green',
+                       label='Decision Tree')
+    axes[1, 1].scatter(y, models[3], color='purple', label='FNN')
+    axes[1, 1].set_title("Comparison")
+    axes[1, 1].set_xlabel("True Values")
+    axes[1, 1].set_ylabel("Predictions")
+    axes[1, 1].legend()
+
+    axes[2, 0].scatter(y, models[3], color='purple')
+    axes[2, 0].set_title("Feedforward Neural Network")
+    axes[2, 0].set_xlabel("True Values")
+    axes[2, 0].set_ylabel("Predictions")
+
+    plt.show()
 
 
 if __name__ == "__main__":
